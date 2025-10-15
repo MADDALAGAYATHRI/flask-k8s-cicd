@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: PLACEHOLDER_IMAGE
+          image: flask-hello:latest  # will be replaced by workflow
           ports:
             - containerPort: 8080
           readinessProbe:
