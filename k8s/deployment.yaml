@@ -20,19 +20,20 @@ spec:
         app: myapp
     spec:
       containers:
-        - name: myapp
-          image: flask-hello:latest  # will be replaced by workflow
-          ports:
-            - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
+      - name: myapp
+        image: maddalagayathri/flask-hello:latest  # can replace with workflow SHA for updates
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
