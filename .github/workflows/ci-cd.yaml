@@ -1,4 +1,4 @@
-name: CI/CD Build → Push → Deploy
+name: CI/CD Build → Push
 
 on:
   push:
@@ -43,27 +43,4 @@ jobs:
         run: |
           echo "image_full=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}" >> $GITHUB_OUTPUT
 
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Decode kubeconfig
-        env:
-          KUBECONFIG_B64: ${{ secrets.KUBECONFIG }}
-        run: |
-          mkdir -p $HOME/.kube
-          echo "$KUBECONFIG_B64" | base64 --decode > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-
-      - name: Update image in manifest
-        run: |
-          IMAGE=${{ needs.build-and-push.outputs.image_full }}
-          sed -i "s|PLACEHOLDER_IMAGE|${IMAGE}|g" k8s/deployment.yaml
-
-      - name: Apply manifests
-        run: |
-          kubectl apply -n ${{ env.K8S_NAMESPACE }} -f k8s/
-          kubectl rollout status deployment/myapp -n ${{ env.K8S_NAMESPACE }} --timeout=120s
+# NOTE: Deploy step removed since deployment is manual on local Minikube
