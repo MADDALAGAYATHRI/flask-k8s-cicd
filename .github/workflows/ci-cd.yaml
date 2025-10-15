@@ -43,4 +43,8 @@ jobs:
         run: |
           echo "image_full=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}" >> $GITHUB_OUTPUT
 
-# NOTE: Deploy step removed since deployment is manual on local Minikube
+      - name: Display image info
+        run: |
+          echo "Docker image built and pushed successfully!"
+          echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          echo "Deploy manually using: kubectl set image deployment/myapp myapp=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
